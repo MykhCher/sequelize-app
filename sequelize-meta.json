@@ -1,4 +1,6 @@
 [
   "20240706091532-create-brand.js",
-  "20240706101821-create-type.js"
+  "20240706101821-create-type.js",
+  "20240713074330-create-country.js",
+  "20240713081330-add-country-to-brand.js"
 ]
