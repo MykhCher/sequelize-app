@@ -17,10 +17,10 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
-      createdAt: {
+      created_at: {
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         type: Sequelize.DATE
       }
     });
