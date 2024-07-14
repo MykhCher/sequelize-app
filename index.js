@@ -20,15 +20,38 @@ const newBrand = {
     updatedAt: new Date(),
 }
 
+const updatedCountry = {
+    description: 'Unknown',
+}
+
 const addItem = async (model, values) => {
     try {
         const type = await model.create(values, {
-            returning: ['id', 'updatedAt'], 
-            raw: true
+            returning: ['id',], 
+            raw: true,
+            validate: false
     });
         console.log(type)
     } catch (error) {
         console.log('Cannot add item to table: ', error.message)
+    }
+}
+
+const updateItems = async (model, values) => {
+    try {
+        const [number, result] = await model.update(values, {
+            where: {
+                title: {
+                    [Op.like]: "U%" 
+                }
+            },
+            returning: ['*'],
+            raw: true
+        });
+        console.log(number);
+        console.log(result)
+    } catch (error) {
+        console.error(error)
     }
 }
 
@@ -42,12 +65,8 @@ const deleteItem = async (model) => {
     }
 }
 
-// deleteItem(Country);
 
-
-// addItem(Country, newBrand);
-
- const dropTable = async (model) => {
+const dropTable = async (model) => {
     try {
         await model.drop();
         console.log(`Table has been droped`)
@@ -57,20 +76,14 @@ const deleteItem = async (model) => {
     
 }
 
-// dropTable(Country) 
-
- const syncTable = async (model) => {
-     try {
-         await model.sync({alter: true});
-         console.log('Sync table has been done')
-     } catch (error) {
-         console.log('Cannot sync table: ', error.message)
-     }
+const syncTable = async (model) => {
+    try {
+        await model.sync({alter: true});
+        console.log('Sync table has been done')
+    } catch (error) {
+        console.log('Cannot sync table: ', error.message)
+    }
 } 
-
-// syncTable(Country);
-
-// Insert many items
 
 const addItems = async(model, values) => {
     try {
@@ -82,7 +95,6 @@ const addItems = async(model, values) => {
     }
 }
 
-// addItems(Type, types);
 
 const getItems = async (model) => {
     try {
@@ -99,5 +111,17 @@ const getItems = async (model) => {
         console.log(error.message)
     }
 }
+
+updateItems(Country, updatedCountry);
+
+// deleteItem(Country);
+
+// dropTable(Country) 
+
+// syncTable(Country);
+
+// addItems(Type, types);
+
+// addItem(Country, newBrand);
 
 // getItems(Type);
