@@ -1,8 +1,6 @@
-console.log('Hi everybody')
-
 const { brands, types, countries } = require('./src/constants');
 const db = require('./src/db/models');
-const { Brand, Type, Country } = db;
+const { Brand, Type, Country, Sequelize: {Op} } = db;
 
 const dbCheck = async () => {
     try {
@@ -16,8 +14,8 @@ const dbCheck = async () => {
 dbCheck()
 
 const newBrand = {
-    title: 'ZAaaaafaaZ',
-    description: 'Famous Ukrainian brand.',
+    title: 'Japaaaaaaan',
+    description: 'Japan',
     createdAt: new Date(),
     updatedAt: new Date(),
 }
@@ -25,7 +23,8 @@ const newBrand = {
 const addItem = async (model, values) => {
     try {
         const type = await model.create(values, {
-            returning: ['id', 'updatedAt'], raw: true
+            returning: ['id', 'updatedAt'], 
+            raw: true
     });
         console.log(type)
     } catch (error) {
@@ -33,7 +32,8 @@ const addItem = async (model, values) => {
     }
 }
 
-const deleteItem =async (model) => {
+
+const deleteItem = async (model) => {
     try {
         const delItem = await model.destroy({where: {}})
         console.log(`Number of deleted rows: ${delItem}`);
@@ -45,7 +45,7 @@ const deleteItem =async (model) => {
 // deleteItem(Country);
 
 
-// addItem(Brand, newBrand);
+// addItem(Country, newBrand);
 
  const dropTable = async (model) => {
     try {
@@ -82,4 +82,22 @@ const addItems = async(model, values) => {
     }
 }
 
-addItems(Country, countries);
+// addItems(Type, types);
+
+const getItems = async (model) => {
+    try {
+        const items = await model.findAll({
+            where: {
+                title: {
+                    [Op.like]: 'L%'
+                }
+            },
+            raw: true
+        });
+        items.forEach(item => {console.log(item)});
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+// getItems(Type);
